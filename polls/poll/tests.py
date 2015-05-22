@@ -2,7 +2,7 @@ import datetime
 
 from django.test import TestCase
 from django.utils import timezone
-from django.cor.urlresolvers import reverse
+from django.core.urlresolvers import reverse
 
 from poll.models import Question
 
@@ -39,7 +39,7 @@ def create_question(question_text, days):
     '''
         creates questionwith offset -(past)/+(future)
     '''
-    time = timezone.now + datetime.timedelta(dayes=days)
+    time = timezone.now() + datetime.timedelta(days=days)
     return Question.objects.create(question_text=question_text,
                                    pub_date=time)
 
@@ -100,3 +100,22 @@ class QuestionViewTests(TestCase):
             response.context['latest_question_list'],
             ['<Question: Past question 2.>', '<Question: Past question 1.>']
         )
+
+
+class QuestionIndexDetailTests(TestCase):
+    """docstring for QuestionIndexDetailTests"""
+    def test_detail_view_with_a_future_question(self):
+        '''if pub_date in future, detail should return 404 error'''
+        future_question = create_question(question_text='Future Question.',
+                                          days=5)
+        response = self.client.get(reverse('polls:detail',
+                                   args=(future_question.id,)))
+        self.assertEqual(response.status_code, 404)
+
+    def test_detail_view_with_a_past_question(self):
+        '''if pub_date in past, detail should return 200 error'''
+        past_question = create_question(question_text='Past Question.',
+                                        days=-5)
+        response = self.client.get(reverse('polls:detail',
+                                   args=(past_question.id,)))
+        self.assertEqual(response.status_code, 200)
