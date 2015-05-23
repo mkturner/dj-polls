@@ -1,0 +1,17 @@
+Name                           Stmts   Miss  Cover
+--------------------------------------------------
+manage                             6      0   100%
+poll/__init__                      0      0   100%
+poll/admin                        12      0   100%
+poll/migrations/0001_initial       5      0   100%
+poll/migrations/__init__           0      0   100%
+poll/models                       20      1    95%
+poll/tests                        55      0   100%
+poll/urls                          3      0   100%
+poll/views                        28      8    71%
+polls/__init__                     0      0   100%
+polls/settings                    18      0   100%
+polls/urls                         3      0   100%
+polls/wsgi                         4      4     0%
+--------------------------------------------------
+TOTAL                            154     13    92%
